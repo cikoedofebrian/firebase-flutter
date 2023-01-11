@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -37,15 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    Firebase.initializeApp().whenComplete(() {
-      print("completed");
-      setState(() {});
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -67,16 +60,16 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          QuerySnapshot snap =
-              await FirebaseFirestore.instance.collection('chat').get();
-          snap.docs.forEach((element) {
-            print(element.data());
-          });
-          var chat = FirebaseFirestore.instance
-              .collection('chat')
-              .doc("L0vEedNZIIeFRtWi9ywn")
-              .get();
-          print(chat);
+          // QuerySnapshot snap =
+          //     await FirebaseFirestore.instance.collection('chat').get();
+          // snap.docs.forEach((element) {
+          //   print(element.data());
+          // });
+          // var chat = FirebaseFirestore.instance
+          //     .collection('chat')
+          //     .doc("L0vEedNZIIeFRtWi9ywn")
+          //     .get();
+          // print(chat);
         },
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

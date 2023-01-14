@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/auth_form.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Auth extends StatefulWidget {
   const Auth({super.key});
@@ -15,7 +16,7 @@ class _AuthState extends State<Auth> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: const AuthForm(submitForm: _submitForm),
+      body: AuthForm(submitForm: _submitForm),
     );
   }
 }

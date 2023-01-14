@@ -10,8 +10,27 @@ class Auth extends StatefulWidget {
 }
 
 class _AuthState extends State<Auth> {
-  void _submitForm(
-      String email, String username, String password, bool isLogin) {}
+  final _auth = FirebaseAuth.instance;
+  void _submitForm(String email, String username, String password, bool isLogin,
+      BuildContext ctx) async {
+    try {
+      if (isLogin) {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+      } else {
+        await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+      }
+    } on FirebaseAuthException catch (err) {
+      var message = "An error occured";
+      if (err.message != null) {
+        message = err.message!;
+      }
+      final snackBar = SnackBar(content: Text(message));
+      ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

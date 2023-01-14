@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({super.key});
+  const AuthForm({super.key, required this.submitForm});
+
+  final void Function(
+      String email, String username, String password, bool isLogin) submitForm;
 
   @override
   State<AuthForm> createState() => _AuthFormState();
 }
 
 class _AuthFormState extends State<AuthForm> {
+  void _onSubmit() {
+    final valid = _formKey.currentState!.validate();
+    if (valid) {
+      _formKey.currentState!.save();
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  }
+
+  bool _islogin = true;
+  String _username = '';
+  String _password = '';
+  String _email = '';
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -19,46 +36,87 @@ class _AuthFormState extends State<AuthForm> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Form(
+              key: _formKey,
               child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  label: Text('Email'),
-                ),
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  label: Text('Username'),
-                ),
-              ),
-              TextFormField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  label: Text('Password'),
-                ),
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextButton(
-                    onPressed: () {},
-                    child: Text('Sign Up'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          Theme.of(context).colorScheme.secondary),
+                  TextFormField(
+                    key: const ValueKey('email'),
+                    onSaved: (newValue) {
+                      _email = newValue!;
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please input an email";
+                      } else if (!value.contains('@') ||
+                          !value.endsWith('.com')) {
+                        return "Please input a valid email";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      label: Text('Email'),
                     ),
-                    child: const Text('Login'),
                   ),
+                  if (!_islogin)
+                    TextFormField(
+                      key: const ValueKey('Username'),
+                      onSaved: (newValue) {
+                        _username = newValue!;
+                      },
+                      decoration: const InputDecoration(
+                        label: Text('Username'),
+                      ),
+                      validator: (value) {
+                        if (value!.length < 4) {
+                          return "A username has minimum length of 4";
+                        }
+                        return null;
+                      },
+                    ),
+                  TextFormField(
+                    key: const ValueKey('password'),
+                    onSaved: (newValue) {
+                      _password = newValue!;
+                    },
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      label: Text('Password'),
+                    ),
+                    validator: (value) {
+                      if (value!.length < 4) {
+                        return "A password has minimum length of 7";
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _islogin = !_islogin;
+                          });
+                        },
+                        child: _islogin == true
+                            ? const Text('Sign Up')
+                            : const Text('Login'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          _onSubmit();
+                        },
+                        child: _islogin == true
+                            ? const Text('Login')
+                            : const Text('Sign Up'),
+                      ),
+                    ],
+                  )
                 ],
-              )
-            ],
-          )),
+              )),
         ),
       ),
     );

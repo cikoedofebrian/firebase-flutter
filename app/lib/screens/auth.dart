@@ -9,10 +9,13 @@ class Auth extends StatefulWidget {
 }
 
 class _AuthState extends State<Auth> {
+  void _submitForm(
+      String email, String username, String password, bool isLogin) {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        body: const AuthForm());
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: const AuthForm(submitForm: _submitForm),
+    );
   }
 }

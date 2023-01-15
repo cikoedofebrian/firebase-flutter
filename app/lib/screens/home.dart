@@ -31,16 +31,8 @@ class Home extends StatelessWidget {
           )
         ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     FirebaseFirestore.instance
-      //         .collection('chats/j6XrxgTG5dFTuHfygtvw/messages')
-      //         .add({'text': 'this is from the button'});
-      //   },
-      //   child: const Icon(Icons.add),
-      // ),
       body: Column(
-        children: [Expanded(child: Chats()), NewMessages()],
+        children: const [Expanded(child: Chats()), NewMessages()],
       ),
     );
   }

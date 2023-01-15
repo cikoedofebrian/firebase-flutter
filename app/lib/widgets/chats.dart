@@ -1,4 +1,6 @@
+import 'package:app/widgets/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Chats extends StatelessWidget {
@@ -12,16 +14,20 @@ class Chats extends StatelessWidget {
           return const CircularProgressIndicator();
         }
         final data = snapshot.data!.docs;
+        final uid = FirebaseAuth.instance.currentUser!.uid;
         return ListView.builder(
+          reverse: true,
           itemCount: data.length,
           itemBuilder: ((context, index) {
-            return Text(snapshot.data!.docs[index]['text']);
+            return Message(
+                message: data[index]['text'],
+                isUser: data[index]['userId'] == uid ? true : false);
           }),
         );
       }),
       stream: FirebaseFirestore.instance
           .collection('chats')
-          .orderBy('date')
+          .orderBy('date', descending: true)
           .snapshots(),
     );
   }

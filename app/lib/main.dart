@@ -1,4 +1,6 @@
 import 'package:app/screens/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import './screens/home.dart';
@@ -30,7 +32,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red)
             .copyWith(secondary: Colors.yellow),
       ),
-      home: const Auth(),
+      home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) => snapshot.hasData ? Home() : Auth()),
       routes: {
         '/home': (context) => const Home(),
       },

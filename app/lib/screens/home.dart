@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -7,6 +8,28 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("FChat"),
+        actions: [
+          PopupMenuButton(
+            icon: const Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
+            itemBuilder: (context) => [
+              const PopupMenuItem<int>(
+                value: 0,
+                child: Text("My Account"),
+              ),
+            ],
+            onSelected: (value) {
+              if (value == 0) {
+                FirebaseAuth.instance.signOut();
+              }
+            },
+          )
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           FirebaseFirestore.instance

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({super.key, required this.submitForm});
-
+  const AuthForm(
+      {super.key, required this.submitForm, required this.isLoading});
+  final bool isLoading;
   final void Function(String email, String username, String password,
       bool isLogin, BuildContext ctx) submitForm;
 
@@ -93,29 +94,31 @@ class _AuthFormState extends State<AuthForm> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                            _islogin = !_islogin;
-                          });
-                        },
-                        child: _islogin == true
-                            ? const Text('Sign Up')
-                            : const Text('Login'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _onSubmit();
-                        },
-                        child: _islogin == true
-                            ? const Text('Login')
-                            : const Text('Sign Up'),
-                      ),
-                    ],
-                  )
+                  if (widget.isLoading) const CircularProgressIndicator(),
+                  if (!widget.isLoading)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _islogin = !_islogin;
+                            });
+                          },
+                          child: _islogin == true
+                              ? const Text('Sign Up')
+                              : const Text('Login'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            _onSubmit();
+                          },
+                          child: _islogin == true
+                              ? const Text('Login')
+                              : const Text('Sign Up'),
+                        ),
+                      ],
+                    )
                 ],
               )),
         ),

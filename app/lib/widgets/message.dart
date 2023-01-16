@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 
 class Message extends StatelessWidget {
-  const Message({super.key, required this.message, required this.isUser});
+  const Message(
+      {super.key,
+      required this.message,
+      required this.isUser,
+      required this.messagekey,
+      required this.username});
   final String message;
+  final String username;
   final bool isUser;
+  final String messagekey;
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      key: ValueKey(messagekey),
       mainAxisAlignment:
           !isUser ? MainAxisAlignment.start : MainAxisAlignment.end,
       children: [
@@ -26,11 +34,25 @@ class Message extends StatelessWidget {
                       : const Radius.circular(12))),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-          child: Text(
-            message,
-            style: isUser
-                ? const TextStyle(color: Colors.white)
-                : const TextStyle(color: Colors.black),
+          child: Column(
+            crossAxisAlignment:
+                isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            children: [
+              Text(
+                username,
+                style: isUser
+                    ? const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold)
+                    : const TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                message,
+                style: isUser
+                    ? const TextStyle(color: Colors.white)
+                    : const TextStyle(color: Colors.black),
+              ),
+            ],
           ),
         ),
       ],

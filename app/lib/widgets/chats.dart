@@ -23,6 +23,7 @@ class Chats extends StatelessWidget {
               username: data[index]['username'],
               message: data[index]['text'],
               isUser: data[index]['userId'] == uid ? true : false,
+              image: data[index]['imageurl'],
               messagekey: data[index].id,
             );
           }),

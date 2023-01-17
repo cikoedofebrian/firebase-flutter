@@ -8,7 +8,7 @@ class AuthForm extends StatefulWidget {
       {super.key, required this.submitForm, required this.isLoading});
   final bool isLoading;
   final void Function(String email, String username, String password,
-      bool isLogin, BuildContext ctx) submitForm;
+      bool isLogin, BuildContext ctx, File? image) submitForm;
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -18,7 +18,7 @@ class _AuthFormState extends State<AuthForm> {
   void _onSubmit() {
     final valid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
-    if (_image == null) {
+    if (_image == null && !_islogin) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Photo cant be empty'),
         backgroundColor: Colors.black,
@@ -27,7 +27,8 @@ class _AuthFormState extends State<AuthForm> {
     }
     if (valid) {
       _formKey.currentState!.save();
-      widget.submitForm(_email, _username, _password, _islogin, context);
+      widget.submitForm(_email, _username, _password, _islogin, context,
+          _image != null ? File(_image!.path) : null);
     }
   }
 

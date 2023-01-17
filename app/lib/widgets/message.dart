@@ -6,10 +6,12 @@ class Message extends StatelessWidget {
       required this.message,
       required this.isUser,
       required this.messagekey,
-      required this.username});
+      required this.username,
+      required this.image});
   final String message;
   final String username;
   final bool isUser;
+  final String image;
   final String messagekey;
 
   @override
@@ -34,24 +36,37 @@ class Message extends StatelessWidget {
                       : const Radius.circular(12))),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-          child: Column(
-            crossAxisAlignment:
-                isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          child: Row(
             children: [
-              Text(
-                username,
-                style: isUser
-                    ? const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)
-                    : const TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
+              if (!isUser)
+                Container(
+                  margin: const EdgeInsets.only(right: 10.0),
+                  child: CircleAvatar(backgroundImage: NetworkImage(image)),
+                ),
+              Column(
+                crossAxisAlignment:
+                    isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    username,
+                    style: isUser
+                        ? const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold)
+                        : const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    message,
+                    style: isUser
+                        ? const TextStyle(color: Colors.white)
+                        : const TextStyle(color: Colors.black),
+                  ),
+                ],
               ),
-              Text(
-                message,
-                style: isUser
-                    ? const TextStyle(color: Colors.white)
-                    : const TextStyle(color: Colors.black),
-              ),
+              if (isUser)
+                Container(
+                    margin: const EdgeInsets.only(left: 10),
+                    child: CircleAvatar(backgroundImage: NetworkImage(image))),
             ],
           ),
         ),

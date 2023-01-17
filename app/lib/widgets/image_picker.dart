@@ -15,7 +15,8 @@ class _ProfilePickerState extends State<ProfilePicker> {
   File? _image;
   void _pickImage() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+    final XFile? image =
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
     if (image != null) {
       setState(() {
         _image = File(image.path);
